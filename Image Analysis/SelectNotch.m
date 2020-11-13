@@ -31,7 +31,7 @@ for i= 1:size(previousRegions,1)
 end
 
 while(1)
-
+    
     % Select new region
     roi = drawrectangle('Parent',ax);
     rectPosition = roi.Position;
@@ -41,10 +41,12 @@ while(1)
     ymax = round(roi.Position(2) + roi.Position(4));
     newImage = origImage(ymin:ymax, xmin:xmax, :);
     
-    choice = menu('Are you happy with your region','Yes','No');
+    choice = listdlg('PromptString',{'Are you happy with your line'},...
+        'ListString',{'Yes','No'});
     if choice==1
         break;
     end
+    delete(roi);
 end
 % imshow(newImage)
 end

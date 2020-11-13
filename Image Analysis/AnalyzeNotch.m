@@ -21,16 +21,20 @@ line_vec = zeros(2,2);
 I = imshow(notchImage,'Parent',ax);
 for i = 1:2
     while(1)
-        point = drawpoint('Parent',ax);
+        point1 = drawpoint('Parent',ax);
         point2 = drawpoint('Parent',ax);
-        pos = [point.Position; point2.Position];
+        pos = [point1.Position; point2.Position];
         line = drawline('Position',pos, 'Color','magenta','Parent',ax);
         line_vec(:,i) = [(pos(1,1) - pos(2,1));(pos(1,2) - pos(2,2))];
         line_vec(:,i) = line_vec(:,i)./norm(line_vec(:,i));
-        choice = lst('Are you happy with your line','Yes','No');
+        choice = listdlg('PromptString',{'Are you happy with your line'},...
+            'ListString',{'Yes','No'});
         if choice==1
             break;
         end
+        delete(line)
+        delete(point1)
+        delete(point2);
     end
 end
 pause(0.1);
