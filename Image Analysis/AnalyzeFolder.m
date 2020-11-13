@@ -11,12 +11,14 @@ function theta_mat = AnalyzeFolder(path,varargin)
 % default values
 isRelative = false;
 numberOfNotches = 5;
+saveLocation = "testOutput.csv";
 
 p = inputParser();
 addRequired(p,'path',@isstring);
 addOptional(p,'numberOfNotches',numberOfNotches,@isnumeric);
 addOptional(p, 'isRelative', isRelative, @islogical);
 addOptional(p,'axis',0);
+addOptional(p,'SaveLocation',saveLocation,@isstring);
 parse(p,path,varargin{:});
 
 isRelative = p.Results.isRelative;
@@ -25,20 +27,22 @@ ax = p.Results.axis;
 if ax == 0
     ax = gca;
 end
+saveLocation = p.Results.SaveLocation;
 %*********************************************
 
 if isRelative
-    directory = pwd + "\" + path;
-else
-    directory = path;
+    path = pwd + "\" + path;
+    saveLocation = pwd + "\" + saveLocation;
 end
-filesAndFolders = dir(directory);
+filesAndFolders = dir(path);
 filesInDir = filesAndFolders(~([filesAndFolders.isdir]));
 numOfFiles = length(filesInDir);
 theta_mat = zeros(numberOfNotches, numOfFiles);
 for i = 1:numOfFiles
-    img = imread(directory+filesInDir(i).name);
+    img = imread(path+filesInDir(i).name);
     theta = AnalyzeImage(img,numberOfNotches,'axis',ax);
     theta_mat(:,i) = theta;
 end
+writematrix(theta_mat,saveLocation);
+close all;
 
