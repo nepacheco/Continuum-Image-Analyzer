@@ -23,7 +23,7 @@ isRelative = p.Results.isRelative;
 numberOfNotches = p.Results.numberOfNotches;
 ax = p.Results.axis;
 if ax == 0
-    ax = gca
+    ax = gca;
 end
 %*********************************************
 

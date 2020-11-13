@@ -12,7 +12,7 @@ parse(p,path,varargin{:});
 
 ax = p.Results.axis;
 if ax == 0
-    ax = gca
+    ax = gca;
 end
 %*********************************************
 
@@ -21,10 +21,8 @@ line_vec = zeros(2,2);
 I = imshow(notchImage,'Parent',ax);
 for i = 1:2
     while(1)
-        point1 = drawpoint('Parent',ax);
-        point2 = drawpoint('Parent',ax);
-        pos = [point1.Position; point2.Position];
-        line = drawline('Position',pos, 'Color','magenta','Parent',ax);
+        line = drawline('Color','magenta','Parent',ax);
+        pos = line.Position;
         line_vec(:,i) = [(pos(1,1) - pos(2,1));(pos(1,2) - pos(2,2))];
         line_vec(:,i) = line_vec(:,i)./norm(line_vec(:,i));
         choice = listdlg('PromptString',{'Are you happy with your line'},...
@@ -33,8 +31,6 @@ for i = 1:2
             break;
         end
         delete(line)
-        delete(point1)
-        delete(point2);
     end
 end
 pause(0.1);
