@@ -1,6 +1,20 @@
-function theta = AnalayzeNotch(notchImage)
+function theta = AnalayzeNotch(notchImage,varargin)
 %ANALAYZENOTCH Has the user select 4 points to determine the angle the two
 %cut sections are in relation to one another.
+
+%****** INPUT PARSING *********************
+% default values
+f = gcf;
+
+p = inputParser();
+addRequired(p,'Image');
+addOptional(p,'figure',f);
+parse(p,path,varargin{:});
+
+f = p.Results.figure;
+%*********************************************
+
+figure(f);
 theta = 0;
 line_vec = zeros(2,2);
 imshow(notchImage);

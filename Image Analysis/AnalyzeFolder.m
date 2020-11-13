@@ -11,16 +11,21 @@ function theta_mat = AnalyzeFolder(path,varargin)
 % default values
 isRelative = false;
 numberOfNotches = 5;
+f = gcf;
 
 p = inputParser();
 addRequired(p,'path',@isstring);
 addOptional(p,'numberOfNotches',numberOfNotches,@isnumeric);
 addOptional(p, 'isRelative', isRelative, @islogical);
+addOptional(p,'figure',f);
 parse(p,path,varargin{:});
 
 isRelative = p.Results.isRelative;
 numberOfNotches = p.Results.numberOfNotches;
+f = p.Results.figure;
 %*********************************************
+
+figure(f);
 
 if isRelative
     directory = pwd + "\" + path;

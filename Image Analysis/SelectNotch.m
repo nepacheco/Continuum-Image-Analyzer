@@ -8,15 +8,20 @@ function [newImage rectPosition] = SelectNotch(origImage,varargin)
 
 %****** INPUT PARSING *********************
 previousRegions = [];
+f = 1;
+
 p = inputParser();
 addRequired(p,'origImage',@isnumeric);
 checkmat = @(x) isnumeric(x) && (size(x,2) == 4 || size(x,2) == 0);
 addOptional(p, 'previousRegions', previousRegions, checkmat);
+addOptional(p,'figure',f);
 parse(p,origImage,varargin{:});
 
 previousRegions = p.Results.previousRegions;
+f = p.Results.figure;
 %*********************************************
 
+figure(f);
 while(1)
     imshow(origImage);
     % Display previously selected regions
