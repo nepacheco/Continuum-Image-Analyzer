@@ -4,7 +4,7 @@ function [newImage rectPosition] = SelectNotch(origImage,varargin)
 %   Optional argument, previousRegions, is a nx4 array indicating previous
 %   rectangles that have been analyzed where a row consists of
 %   [xmin,ymin,xdistance,ydistance]. The previous regions will be selected
-%   on the image
+%   on the image. Default value is [].
 
 %****** INPUT PARSING *********************
 previousRegions = [];
