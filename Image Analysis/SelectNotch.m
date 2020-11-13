@@ -17,21 +17,27 @@ parse(p,origImage,varargin{:});
 previousRegions = p.Results.previousRegions;
 %*********************************************
 
-
-imshow(origImage);
-% Display previously selected regions
-for i= 1:size(previousRegions,1)
-    rectangle('Position',previousRegions(i,:),'EdgeColor','red','LineWidth',1.5)
+while(1)
+    imshow(origImage);
+    % Display previously selected regions
+    for i= 1:size(previousRegions,1)
+        rectangle('Position',previousRegions(i,:),'EdgeColor','red','LineWidth',1.5)
+    end
+    
+    % Select new region
+    roi = drawrectangle();
+    rectPosition = roi.Position;
+    xmin = round(roi.Position(1));
+    ymin = round(roi.Position(2));
+    xmax = round(roi.Position(1) + roi.Position(3));
+    ymax = round(roi.Position(2) + roi.Position(4));
+    newImage = origImage(ymin:ymax, xmin:xmax, :);
+    
+    choice = menu('Are you happy with your region','Yes','No');
+    if choice==1
+        break;
+    end
 end
-
-% Select new region
-roi = drawrectangle();
-rectPosition = roi.Position;
-xmin = round(roi.Position(1));
-ymin = round(roi.Position(2));
-xmax = round(roi.Position(1) + roi.Position(3));
-ymax = round(roi.Position(2) + roi.Position(4));
-newImage = origImage(ymin:ymax, xmin:xmax, :);
 % imshow(newImage)
 end
 

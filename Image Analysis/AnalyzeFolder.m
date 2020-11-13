@@ -1,4 +1,4 @@
-function [outputArg1,outputArg2] = AnalyzeFolder(path,n,varargin)
+function theta_mat = AnalyzeFolder(path,n,varargin)
 %ANALYZEFOLDER Takes in a path to a folder which contains images to analyze
 %and goes through each image one by one.
 %   Detailed explanation goes here
