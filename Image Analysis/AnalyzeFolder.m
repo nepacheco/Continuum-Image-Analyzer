@@ -11,21 +11,21 @@ function theta_mat = AnalyzeFolder(path,varargin)
 % default values
 isRelative = false;
 numberOfNotches = 5;
-f = gcf;
 
 p = inputParser();
 addRequired(p,'path',@isstring);
 addOptional(p,'numberOfNotches',numberOfNotches,@isnumeric);
 addOptional(p, 'isRelative', isRelative, @islogical);
-addOptional(p,'figure',f);
+addOptional(p,'axis',0);
 parse(p,path,varargin{:});
 
 isRelative = p.Results.isRelative;
 numberOfNotches = p.Results.numberOfNotches;
-f = p.Results.figure;
+ax = p.Results.axis;
+if ax == 0
+    ax = gca
+end
 %*********************************************
-
-figure(f);
 
 if isRelative
     directory = pwd + "\" + path;
@@ -38,7 +38,7 @@ numOfFiles = length(filesInDir);
 theta_mat = zeros(numberOfNotches, numOfFiles);
 for i = 1:numOfFiles
     img = imread(directory+filesInDir(i).name);
-    theta = AnalyzeImage(img,numberOfNotches);
+    theta = AnalyzeImage(img,numberOfNotches,'axis',ax);
     theta_mat(:,i) = theta;
 end
 
