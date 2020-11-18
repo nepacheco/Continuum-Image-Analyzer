@@ -9,36 +9,59 @@ function theta_mat = AnalyzeFolder(path,varargin)
 
 %****** INPUT PARSING *********************
 % default values
-isRelative = false;
+isRelative = true;
 numberOfNotches = 5;
-f = gcf;
+saveLocation = "testOutput.csv";
+singleFile = false;
+writeMode = 'overwrite';
+writeOptions = {'overwrite','append'};
 
 p = inputParser();
 addRequired(p,'path',@isstring);
 addOptional(p,'numberOfNotches',numberOfNotches,@isnumeric);
 addOptional(p, 'isRelative', isRelative, @islogical);
-addOptional(p,'figure',f);
+addOptional(p,'axis',0);
+addOptional(p,'SaveLocation',saveLocation,@isstring);
+addOptional(p,'SingleFile',singleFile, @islogical);
+addParameter(p,'WriteMode',writeMode,...
+             @(x) any(validatestring(x,writeOptions)));
 parse(p,path,varargin{:});
 
 isRelative = p.Results.isRelative;
 numberOfNotches = p.Results.numberOfNotches;
-f = p.Results.figure;
+ax = p.Results.axis;
+if ax == 0
+    ax = gca;
+end
+saveLocation = p.Results.SaveLocation;
+singleFile = p.Results.SingleFile;
+writeMode = p.Results.WriteMode;
 %*********************************************
 
-figure(f);
-
 if isRelative
-    directory = pwd + "\" + path;
+    path = pwd + "\" + path;
+    saveLocation = pwd + "\" + saveLocation;
+end
+if ~singleFile
+    filesAndFolders = dir(path);
+    filesInDir = filesAndFolders(~([filesAndFolders.isdir]));
+    numOfFiles = length(filesInDir);
+    theta_mat = zeros(numberOfNotches, numOfFiles);
+    for i = 1:numOfFiles
+        img = imread(path+filesInDir(i).name);
+        theta = AnalyzeImage(img,numberOfNotches,'axis',ax);
+        theta_mat(:,i) = theta;
+    end
 else
-    directory = path;
+    img = imread(path);
+    theta = AnalyzeImage(img,numberOfNotches,'axis',ax);
+    theta_mat = theta;
 end
-filesAndFolders = dir(directory);
-filesInDir = filesAndFolders(~([filesAndFolders.isdir]));
-numOfFiles = length(filesInDir);
-theta_mat = zeros(numberOfNotches, numOfFiles);
-for i = 1:numOfFiles
-    img = imread(directory+filesInDir(i).name);
-    theta = AnalyzeImage(img,numberOfNotches);
-    theta_mat(:,i) = theta;
+if (strcmp(writeMode,"append"))
+    mat = readmatrix(saveLocation);
+    writematrix([mat theta_mat],saveLocation);
+else
+    writematrix(theta_mat,saveLocation);
 end
+close all;
 

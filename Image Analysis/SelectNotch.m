@@ -8,29 +8,32 @@ function [newImage rectPosition] = SelectNotch(origImage,varargin)
 
 %****** INPUT PARSING *********************
 previousRegions = [];
-f = 1;
+
 
 p = inputParser();
 addRequired(p,'origImage',@isnumeric);
 checkmat = @(x) isnumeric(x) && (size(x,2) == 4 || size(x,2) == 0);
 addOptional(p, 'previousRegions', previousRegions, checkmat);
-addOptional(p,'figure',f);
+addOptional(p,'axis',0);
 parse(p,origImage,varargin{:});
 
 previousRegions = p.Results.previousRegions;
-f = p.Results.figure;
-%*********************************************
+ax = p.Results.axis;
+if ax == 0
+    ax = gca;
+end
+%****************************************
 
-figure(f);
+I = imshow(origImage,'Parent',ax);
+% Display previously selected regions
+for i= 1:size(previousRegions,1)
+    rectangle('Position',previousRegions(i,:),'EdgeColor','red','LineWidth',1.5,'Parent',ax)
+end
+
 while(1)
-    imshow(origImage);
-    % Display previously selected regions
-    for i= 1:size(previousRegions,1)
-        rectangle('Position',previousRegions(i,:),'EdgeColor','red','LineWidth',1.5)
-    end
     
     % Select new region
-    roi = drawrectangle();
+    roi = drawrectangle('Parent',ax);
     rectPosition = roi.Position;
     xmin = round(roi.Position(1));
     ymin = round(roi.Position(2));
@@ -38,10 +41,12 @@ while(1)
     ymax = round(roi.Position(2) + roi.Position(4));
     newImage = origImage(ymin:ymax, xmin:xmax, :);
     
-    choice = menu('Are you happy with your region','Yes','No');
+    choice = listdlg('PromptString',{'Are you happy with your line'},...
+        'ListString',{'Yes','No'});
     if choice==1
         break;
     end
+    delete(roi);
 end
 % imshow(newImage)
 end

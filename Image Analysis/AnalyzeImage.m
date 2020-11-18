@@ -8,26 +8,28 @@ function notchAngles = AnalyzeImage(Image,varargin)
 %****** INPUT PARSING *********************
 % default values
 numberOfNotches = 5;
-f = gcf;
+
 
 p = inputParser();
 addRequired(p,'Image');
 addOptional(p,'numberOfNotches',numberOfNotches,@isnumeric);
-addOptional(p,'figure',f);
+addOptional(p,'axis',0);
 parse(p,path,varargin{:});
 
 numberOfNotches = p.Results.numberOfNotches;
-f = p.Results.figure;
+ax = p.Results.axis;
+if ax == 0
+    ax = gca;
+end
 %*********************************************
 
-figure(f);
 notchAngles = zeros(numberOfNotches,1);
 rectanglePositions = [];
 for i = 1:numberOfNotches
     [notchImage, roi] = SelectNotch(Image,'previousRegions',rectanglePositions,...
-        'figure',f);
+        'axis',ax);
     rectanglePositions = [rectanglePositions; roi];
-    theta = AnalyzeNotch(notchImage,'figure',f);
+    theta = AnalyzeNotch(notchImage,'axis',ax);
     notchAngles(i) = theta;
 end
 end
