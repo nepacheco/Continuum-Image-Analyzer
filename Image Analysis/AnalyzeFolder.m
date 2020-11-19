@@ -12,6 +12,8 @@ function theta_mat = AnalyzeFolder(path,varargin)
 %   to write to the output file
 %   'Style' - Name-Argument {'line','points'} which denotes if you want to
 %   analyze a notch using lines or points.
+%   'StartFile' - Name-Argument par which denotes what file in the
+%   directory we want to start analysis on
 
 
 %****** INPUT PARSING *********************
