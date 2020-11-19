@@ -22,8 +22,9 @@ saveLocation = "testOutput.csv";
 singleFile = false;
 writeMode = 'overwrite';
 writeOptions = {'overwrite','append'};
-style = 'line';
+style = 'points';
 styleOptions = {'line','points'};
+startFile = "";
 
 p = inputParser();
 addRequired(p,'path',@isstring);
@@ -34,7 +35,8 @@ addOptional(p,'SaveLocation',saveLocation,@isstring);
 addOptional(p,'SingleFile',singleFile, @islogical);
 addParameter(p,'WriteMode',writeMode,...
              @(x) any(validatestring(x,writeOptions)));
-addParameter(p,'Style',@(x) any(validatestring(x,styleOptions)));
+addParameter(p,'Style',style,@(x) any(validatestring(x,styleOptions)));
+addParameter(p,'StartFile', startFile,@isstring);
 parse(p,path,varargin{:});
 
 isRelative = p.Results.isRelative;
@@ -47,6 +49,7 @@ saveLocation = p.Results.SaveLocation;
 singleFile = p.Results.SingleFile;
 writeMode = p.Results.WriteMode;
 style = p.Results.Style;
+startFile = p.Results.StartFile;
 %*********************************************
 
 if isRelative
@@ -54,24 +57,44 @@ if isRelative
     saveLocation = pwd + "\" + saveLocation;
 end
 if ~singleFile
+    % Analyzing multiple files in the directory
     filesAndFolders = dir(path);
     filesInDir = filesAndFolders(~([filesAndFolders.isdir]));
     numOfFiles = length(filesInDir);
-    theta_mat = zeros(numOfFiles, numberOfNotches);
-    for i = 1:numOfFiles
+    startIndex = 1;
+    for f = 1:numOfFiles
+        % Goes through the files to determine where to start analyzing
+        % images from.
+        if strcmp(startFile,filesInDir(f).name)
+            startIndex = f;
+            break;
+        end
+    end
+    theta_mat = zeros(numOfFiles-startIndex + 1, numberOfNotches);
+    for i = startIndex:numOfFiles
+        % For loop through the files in the directory and analyze each file
         img = imread(path+filesInDir(i).name);
-        theta = AnalyzeImage(img,numberOfNotches,'axis',ax,'Style',style);
-        theta_mat(i,:) = theta;
+        try 
+        % This is in case someone decides the are done analyzing images but
+        % doesn't want to lose their progress.
+            theta = AnalyzeImage(img,numberOfNotches,'axis',ax,'Style',style);
+            theta_mat(i,:) = theta;
+        catch
+            break;
+        end
     end
 else
+    % We are only analyzing a single file
     img = imread(path);
     theta = AnalyzeImage(img,numberOfNotches,'axis',ax,'Style',style);
     theta_mat = theta;
 end
 if (strcmp(writeMode,"append"))
+    % Append to the current csv file
     mat = readmatrix(saveLocation);
     writematrix([mat;   theta_mat],saveLocation);
 else
+    % Overwrite current csv file
     writematrix(theta_mat,saveLocation);
 end
 close all;
