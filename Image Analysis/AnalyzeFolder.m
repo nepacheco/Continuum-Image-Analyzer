@@ -65,12 +65,12 @@ if ~singleFile
     end
 else
     img = imread(path);
-    theta = AnalyzeImage(img,numberOfNotches,'axis',ax);
+    theta = AnalyzeImage(img,numberOfNotches,'axis',ax,'Style',style);
     theta_mat = theta;
 end
 if (strcmp(writeMode,"append"))
     mat = readmatrix(saveLocation);
-    writematrix([mat theta_mat],saveLocation);
+    writematrix([mat;   theta_mat],saveLocation);
 else
     writematrix(theta_mat,saveLocation);
 end
