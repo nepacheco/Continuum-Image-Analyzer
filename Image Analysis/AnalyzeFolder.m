@@ -57,11 +57,11 @@ if ~singleFile
     filesAndFolders = dir(path);
     filesInDir = filesAndFolders(~([filesAndFolders.isdir]));
     numOfFiles = length(filesInDir);
-    theta_mat = zeros(numberOfNotches, numOfFiles);
+    theta_mat = zeros(numOfFiles, numberOfNotches);
     for i = 1:numOfFiles
         img = imread(path+filesInDir(i).name);
         theta = AnalyzeImage(img,numberOfNotches,'axis',ax,'Style',style);
-        theta_mat(:,i) = theta;
+        theta_mat(i,:) = theta;
     end
 else
     img = imread(path);

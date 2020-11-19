@@ -29,7 +29,7 @@ end
 style = p.Results.Style;
 %*********************************************
 
-notchAngles = zeros(numberOfNotches,1);
+notchAngles = zeros(1,numberOfNotches);
 rectanglePositions = [];
 for i = 1:numberOfNotches
     [notchImage, roi] = SelectNotch(Image,'previousRegions',rectanglePositions,...
