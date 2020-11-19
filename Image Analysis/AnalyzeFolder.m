@@ -1,10 +1,17 @@
 function theta_mat = AnalyzeFolder(path,varargin)
 %ANALYZEFOLDER Takes in a path to a folder which contains images to analyze
 %and goes through each image one by one.
-%   Optional Argument - numberOfNotches - sets how many notches are to be
+%   'NumberOfNotches' - Optional Argument sets how many notches are to be
 %   expected per tube. Default is 5.
-%   Optional Argument - isRelative - sets whether the passed in path is
+%   'isRelative' - Optional Argument sets whether the passed in path is
 %   relative. Default value is false.
+%   'SaveLocation' - Optional Argument which determines where to save the
+%   output. Abides by the 'isRelative' flag.
+%   'Axis' - Optional Argument which is the axis to display the image one
+%   'WriteMode' - Name-Argument {'overwrite','append'} that determines how
+%   to write to the output file
+%   'Style' - Name-Argument {'line','points'} which denotes if you want to
+%   analyze a notch using lines or points.
 
 
 %****** INPUT PARSING *********************
@@ -15,6 +22,8 @@ saveLocation = "testOutput.csv";
 singleFile = false;
 writeMode = 'overwrite';
 writeOptions = {'overwrite','append'};
+style = 'line';
+styleOptions = {'line','points'};
 
 p = inputParser();
 addRequired(p,'path',@isstring);
@@ -25,6 +34,7 @@ addOptional(p,'SaveLocation',saveLocation,@isstring);
 addOptional(p,'SingleFile',singleFile, @islogical);
 addParameter(p,'WriteMode',writeMode,...
              @(x) any(validatestring(x,writeOptions)));
+addParameter(p,'Style',@(x) any(validatestring(x,styleOptions)));
 parse(p,path,varargin{:});
 
 isRelative = p.Results.isRelative;
@@ -36,6 +46,7 @@ end
 saveLocation = p.Results.SaveLocation;
 singleFile = p.Results.SingleFile;
 writeMode = p.Results.WriteMode;
+style = p.Results.Style;
 %*********************************************
 
 if isRelative
@@ -49,7 +60,7 @@ if ~singleFile
     theta_mat = zeros(numberOfNotches, numOfFiles);
     for i = 1:numOfFiles
         img = imread(path+filesInDir(i).name);
-        theta = AnalyzeImage(img,numberOfNotches,'axis',ax);
+        theta = AnalyzeImage(img,numberOfNotches,'axis',ax,'Style',style);
         theta_mat(:,i) = theta;
     end
 else

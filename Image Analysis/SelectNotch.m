@@ -1,10 +1,12 @@
 function [newImage rectPosition] = SelectNotch(origImage,varargin)
 %SELECTNOTCH Takes in an image and allows the user to select a region. The
 %output is a zoomed in picture of that region.
-%   Optional argument, previousRegions, is a nx4 array indicating previous
+%   'PreviousRegions' - Optional Argument is a nx4 array indicating previous
 %   rectangles that have been analyzed where a row consists of
 %   [xmin,ymin,xdistance,ydistance]. The previous regions will be selected
 %   on the image. Default value is [].
+%   'Axis' - Optional Argument which is the axis to display the image one
+
 
 %****** INPUT PARSING *********************
 previousRegions = [];
