@@ -2,8 +2,6 @@ function theta_mat = AnalyzeFolder(path,varargin)
 %ANALYZEFOLDER Takes in a path to a folder which contains images to analyze
 %and goes through each image one by one.
 %
-%   'ImgType' - Optional Argument to select if analyzing curve or notches {'notches', 'curvature'}
-%   'OD' - Optional Argument for outer diameter of tube for scale
 %   'NumberOfNotches' - Optional Argument sets how many notches are to be
 %   expected per tube. Default is 5.
 %   'isRelative' - Optional Argument sets whether the passed in path is
@@ -17,6 +15,8 @@ function theta_mat = AnalyzeFolder(path,varargin)
 %   analyze a notch using lines or points.
 %   'StartFile' - Name-Argument par which denotes what file in the
 %   directory we want to start analysis on
+%   'ImgType' - Name-Argument {'notches', 'curvature'} to select if analyzing curve or notches 
+%   'OD' - Optional Argument for outer diameter of tube for scale
 
 
 %****** INPUT PARSING *********************

@@ -1,13 +1,14 @@
-function notchAngles = AnalyzeImage(Image,varargin)
+function output = AnalyzeImage(Image,varargin)
 %ANALYZEIMAGE analyzes the passed in image by asking the user to select
 %notches and draw lines to determine the angle between notches
 %
-%   'ImgType' - Optional Argument to select if analyzing curve or notches {'notches', 'curvature'}
 %   'NumberOfNotches' - Optional Argument determines how many notches should
 %   be expected on each tube. Default is 5.
 %   'Axis' - Optional Argument which is the axis to display the image one
 %   'Style' - Name-Argument {'line','points'} which denotes if you want to
 %   analyze a notch using lines or points.
+%   'OD' - Optional Argument to set outer diameter
+%   'ImgType' - Name-Argument {'notches', 'curvature'} to select if analyzing curve or notches 
 
 %****** INPUT PARSING *********************
 % default values
@@ -40,25 +41,31 @@ imgType = p.Results.ImgType;
 switch imgType
     case 'notches'
         % zoom on each notch gather data on angles
-        notchAngles = zeros(1,numberOfNotches);
+        output = zeros(1,numberOfNotches);
         rectanglePositions = [];
         for i = 1:numberOfNotches
             [notchImage, roi] = SelectNotch(Image,'previousRegions',rectanglePositions,...
                 'axis',ax);
             rectanglePositions = [rectanglePositions; roi];
             theta = AnalyzeNotch(notchImage,'axis',ax,'Style',style);
-            notchAngles(i) = theta;
+            output(i) = theta;
         end
     case 'curvature'
         % set scale and calc bending radius
         disp('analyzing curvature');
         radius = 0;
         % 'select notch' to zoom in 
-        [notchImage, roi] = SelectNotch(Image, 'axis',ax);
-        % make line to set scale
-        radius = AnalyzeArc(notchImage, 'axis', ax, 'Style', style);
-        % zoom in on separate section to create arc using AnalyzeArc
+        [scaleImage, roi] = SelectNotch(Image, 'axis',ax);
         
+        % make line to set scale
+        scale = SetScale(scaleImage, 'axis', ax, 'Style', style, 'OD', OD);
+        
+        % 'select notch' to zoom in 
+        [arcImage, roi] = SelectNotch(Image, 'axis',ax);
+        
+        % make polylines to create arc
+        radius = AnalyzeArc(arcImage, 'axis', ax, 'Style', style);
+        output = radius * scale + OD/2;
 
 end
 
