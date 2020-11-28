@@ -27,6 +27,7 @@ end
 %****************************************
 
 I = imshow(origImage,'Parent',ax);
+
 % Display previously selected regions
 for i= 1:size(previousRegions,1)
     rectangle('Position',previousRegions(i,:),'EdgeColor','red','LineWidth',1.5,'Parent',ax)
@@ -43,7 +44,7 @@ while(1)
     ymax = round(roi.Position(2) + roi.Position(4));
     newImage = origImage(ymin:ymax, xmin:xmax, :);
     
-    choice = listdlg('PromptString',{'Are you happy with your line'},...
+    choice = listdlg('PromptString',{'Confirm zoom'},...
         'ListString',{'Yes','No'});
     if choice==1
         break;

@@ -55,17 +55,22 @@ switch imgType
         disp('analyzing curvature');
         radius = 0;
         % 'select notch' to zoom in 
+        
+        title(ax, "Select area to zoom in to set scale");
         [scaleImage, roi] = SelectNotch(Image, 'axis',ax);
         
         % make line to set scale
         scale = SetScale(scaleImage, 'axis', ax, 'Style', style, 'OD', OD);
         
         % 'select notch' to zoom in 
+        title(ax, "Select area to zoom in on to find curvature");
         [arcImage, roi] = SelectNotch(Image, 'axis',ax);
         
         % make polylines to create arc
-        radius = AnalyzeArc(arcImage, 'axis', ax, 'Style', style);
-        output = radius * scale + OD/2;
+        r_vecPX = AnalyzeArc(arcImage, 'axis', ax, 'Style', style);
+        r_vec = r_vecPX * scale;
+        output = r_vec(1) + OD/2
+        output2 = mean(r_vec);
 
 end
 

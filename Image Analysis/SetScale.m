@@ -30,6 +30,7 @@ OD = p.Results.OD;
 scale = 0;
 line_vec = zeros(2,2);
 I = imshow(notchImage,'Parent',ax);
+title(ax, "Select 2 points to set the diameter of the tube");
 while(1)
     switch style
         case 'line'
@@ -44,7 +45,7 @@ while(1)
             delete(point1); delete(point2);
     end
     line_vec = [(pos(1,1) - pos(2,1));(pos(1,2) - pos(2,2))];
-    scale = OD/norm(line_vec)
+    scale = OD/norm(line_vec);
 
     choice = listdlg('PromptString',{'Are you happy with your line'},...
         'ListString',{'Yes','No'});

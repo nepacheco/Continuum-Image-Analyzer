@@ -27,6 +27,7 @@ style = p.Results.Style;
 theta = 0;
 line_vec = zeros(2,2);
 I = imshow(notchImage,'Parent',ax);
+title(ax, "Select points on edge of notch cut");
 for i = 1:2
     while(1)
         switch style

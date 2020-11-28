@@ -83,7 +83,7 @@ if ~singleFile
         end
     end
     theta_mat = zeros(numOfFiles-startIndex + 1, numberOfNotches);
-%     r_mat = zero(numOfFiles-startIndex + 1, 1);
+    r_mat = zeros(numOfFiles-startIndex + 1, 1);
     save_mat = [];
     for i = startIndex:numOfFiles
         % For loop through the files in the directory and analyze each file
