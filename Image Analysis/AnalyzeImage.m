@@ -54,8 +54,11 @@ switch imgType
         % set scale and calc bending radius
         disp('analyzing curvature');
         radius = 0;
-        % 'select notch' to zoom in 
         
+        % prompt to rotate image
+        Image = RotateImage(Image, 'axis',ax);
+        
+        % 'select notch' to zoom in 
         title(ax, "Select area to zoom in to set scale");
         [scaleImage, roi] = SelectNotch(Image, 'axis',ax);
         

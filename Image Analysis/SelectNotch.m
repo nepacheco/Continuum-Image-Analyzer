@@ -33,8 +33,7 @@ for i= 1:size(previousRegions,1)
     rectangle('Position',previousRegions(i,:),'EdgeColor','red','LineWidth',1.5,'Parent',ax)
 end
 
-while(1)
-    
+while(1)    
     % Select new region
     roi = drawrectangle('Parent',ax);
     rectPosition = roi.Position;
