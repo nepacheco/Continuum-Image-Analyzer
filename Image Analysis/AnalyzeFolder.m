@@ -1,6 +1,10 @@
 function theta_mat = AnalyzeFolder(path,varargin)
 %ANALYZEFOLDER Takes in a path to a folder which contains images to analyze
 %and goes through each image one by one.
+%
+%   To run: 
+%       theta_mat = AnalyzeFolder("C:\users\nickp\pictures\",5,false)
+%
 %   'NumberOfNotches' - Optional Argument sets how many notches are to be
 %   expected per tube. Default is 5.
 %   'isRelative' - Optional Argument sets whether the passed in path is
