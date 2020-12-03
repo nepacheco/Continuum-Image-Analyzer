@@ -27,6 +27,7 @@ end
 %****************************************
 
 I = imshow(origImage,'Parent',ax);
+title("Select the notch you want to see");
 % Display previously selected regions
 for i= 1:size(previousRegions,1)
     rectangle('Position',previousRegions(i,:),'EdgeColor','red','LineWidth',1.5,'Parent',ax)
