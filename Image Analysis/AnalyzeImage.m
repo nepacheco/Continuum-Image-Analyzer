@@ -52,27 +52,25 @@ switch imgType
         end
     case 'curvature'
         % set scale and calc bending radius
-        disp('analyzing curvature');
         radius = 0;
         
         % prompt to rotate image
         Image = RotateImage(Image, 'axis',ax);
         
         % 'select notch' to zoom in 
-        title(ax, "Select area to zoom in to set scale");
-        [scaleImage, roi] = SelectNotch(Image, 'axis',ax);
+        [scaleImage, roi] = SelectNotch(Image, 'axis',ax, 'title',  "Select area to zoom in to set scale");
         
         % make line to set scale
-        scale = SetScale(scaleImage, 'axis', ax, 'Style', style, 'OD', OD);
+        scale = SetScale(scaleImage, 'axis', ax, 'Style', style, 'OD', OD)
         
         % 'select notch' to zoom in 
-        title(ax, "Select area to zoom in on to find curvature");
-        [arcImage, roi] = SelectNotch(Image, 'axis',ax);
+        [arcImage, roi] = SelectNotch(Image, 'axis',ax, 'title', "Select area to zoom in on to find curvature");
         
         % make polylines to create arc
         r_vecPX = AnalyzeArc(arcImage, 'axis', ax, 'Style', style);
+        output = r_vecPX(1);
         r_vec = r_vecPX * scale;
-        output = r_vec(1) + OD/2
+%         output = r_vec(1) + OD/2;
         output2 = mean(r_vec);
 
 end

@@ -96,6 +96,7 @@ if ~singleFile
                 theta_mat(i,:) = theta;
                 save_mat = theta_mat;
             else
+                disp('analyzing curvature');
                 rad = AnalyzeImage(img,'ImgType', 'curvature', 'OD', OD,'axis',ax,'Style',style);
                 r_mat(i) = rad;
                 save_mat = r_mat;
