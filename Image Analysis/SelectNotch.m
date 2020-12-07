@@ -10,7 +10,7 @@ function [newImage rectPosition] = SelectNotch(origImage,varargin)
 
 %****** INPUT PARSING *********************
 previousRegions = [];
-txt = "";
+txt = "Select the notch you want to see";
 
 
 p = inputParser();
