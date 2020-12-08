@@ -44,7 +44,7 @@ while(1)
     ymax = round(roi.Position(2) + roi.Position(4));
     newImage = origImage(ymin:ymax, xmin:xmax, :);
     
-    choice = listdlg('PromptString',{'Are you happy with your line'},...
+    choice = listdlg('PromptString',{'Are you happy with your Box'},...
         'ListString',{'Yes','No'});
     if choice==1
         break;

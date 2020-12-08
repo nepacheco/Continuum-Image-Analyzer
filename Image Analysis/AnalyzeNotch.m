@@ -32,11 +32,11 @@ for i = 1:2
     while(1)
         switch style
             case 'line'
-                title(sprintf("Draw line %d",i);
+                title(sprintf("Draw line %d",i));
                 line = drawline('Color','magenta','Parent',ax);
                 pos = line.Position;
             case 'points'
-                title(sprintf("Select Points for line %d",i);
+                title(sprintf("Select Points for line %d",i));
                 point1 = drawpoint('Color','magenta','Parent',ax);
                 point2 = drawpoint('Color','red','Parent',ax);
                 pos = [point1.Position(1) point1.Position(2); 
