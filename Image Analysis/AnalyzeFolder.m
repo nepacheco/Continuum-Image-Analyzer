@@ -5,8 +5,9 @@ function theta_mat = AnalyzeFolder(path,varargin)
 %   To run: 
 %       theta_mat = AnalyzeFolder("C:\users\nickp\pictures\",5,false)
 
-%   'NumberOfNotches' - Optional Argument sets how many notches are to be
-%   expected per tube. Default is 5.
+%   'TubeParameter' - Optional Argument determines how many notches should
+%   be expected on each tube or the outer diameter of a constant curvature
+%   tube. Default is 5 notches or 5 mm.
 %   'isRelative' - Optional Argument sets whether the passed in path is
 %   relative. Default value is true.
 %   'SaveLocation' - Optional Argument which determines where to save the
@@ -25,7 +26,7 @@ function theta_mat = AnalyzeFolder(path,varargin)
 %****** INPUT PARSING *********************
 % default values
 isRelative = true;
-numberOfNotches = 5;
+tubeParameter = 5;
 saveLocation = "testOutput.csv";
 singleFile = false;
 writeMode = 'overwrite';
@@ -34,14 +35,12 @@ style = 'points';
 styleOptions = {'line','points'};
 imgType = 'notches';
 imgOptions = {'notches', 'curvature'};
-OD = 4;
 startFile = "";
 
 p = inputParser();
 addRequired(p,'path',@isstring);
-addOptional(p,'numberOfNotches',numberOfNotches,@isnumeric);
+addOptional(p,'TubeParameter',tubeParameter,@isnumeric);
 addOptional(p, 'isRelative', isRelative, @islogical);
-addOptional(p,'OD', OD, @isnumeric);
 addOptional(p,'ImgType', imgType, @(x) any(validatestring(x,imgOptions)));
 addOptional(p,'axis',0);
 addOptional(p,'SaveLocation',saveLocation,@isstring);
@@ -53,8 +52,7 @@ addParameter(p,'StartFile', startFile,@isstring);
 parse(p,path,varargin{:});
 
 isRelative = p.Results.isRelative;
-numberOfNotches = p.Results.numberOfNotches;
-OD = p.Results.OD;
+tubeParameter = p.Results.TubeParameter;
 imgType = p.Results.ImgType;
 ax = p.Results.axis;
 if ax == 0
@@ -85,7 +83,7 @@ if ~singleFile
             break;
         end
     end
-    theta_mat = zeros(numOfFiles-startIndex + 1, numberOfNotches);
+    theta_mat = zeros(numOfFiles-startIndex + 1, tubeParameter);
     r_mat = zeros(numOfFiles-startIndex + 1, 1);
     save_mat = [];
     for i = startIndex:numOfFiles
@@ -95,16 +93,18 @@ if ~singleFile
         % This is in case someone decides the are done analyzing images but
         % doesn't want to lose their progress.
             if strcmp(imgType, 'notches')
-                theta = AnalyzeImage(img,numberOfNotches, 'ImgType', 'notches', 'axis',ax,'Style',style);
+                theta = AnalyzeImage(img,tubeParameter, 'ImgType', 'notches', 'axis',ax,'Style',style);
                 theta_mat(i,:) = theta;
                 save_mat = theta_mat;
             else
                 disp('analyzing curvature');
-                rad = AnalyzeImage(img,'ImgType', 'curvature', 'OD', OD,'axis',ax,'Style',style);
+                rad = AnalyzeImage(img,tubeParameter,'ImgType','curvature','axis',ax,'Style',style);
                 r_mat(i) = rad;
                 save_mat = r_mat;
             end
-        catch
+        catch e
+            fprintf(1,'The identifier was:\n%s\n',e.identifier);
+            fprintf(1,'There was an error! The message was:\n%s',e.message);
             break;
         end
     end
@@ -112,11 +112,11 @@ else
     % We are only analyzing a single file
     img = imread(path);
     if strcmp(imgType, 'notches')
-        theta = AnalyzeImage(img,numberOfNotches, 'ImgType', 'notches', 'axis',ax,'Style',style);
+        theta = AnalyzeImage(img,tubeParameter, 'ImgType', 'notches', 'axis',ax,'Style',style);
         theta_mat = theta;
         save_mat = theta_mat;
     else
-        rad = AnalyzeImage(img,'ImgType', 'curvature', 'OD', OD,'axis',ax,'Style',style);
+        rad = AnalyzeImage(img,tubeParameter,'ImgType', 'curvature','axis',ax,'Style',style);
         r_mat = rad;
         save_mat = r_mat;
     end
