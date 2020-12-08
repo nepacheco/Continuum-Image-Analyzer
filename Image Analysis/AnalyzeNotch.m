@@ -58,4 +58,3 @@ pause(0.1);
 
 theta = acosd(dot(line_vec(:,1),line_vec(:,2))/(norm(line_vec(:,1))*norm(line_vec(:,2))));
 end
-
