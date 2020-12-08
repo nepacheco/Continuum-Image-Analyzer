@@ -45,7 +45,7 @@ switch imgType
         rectanglePositions = [];
         for i = 1:numberOfNotches
             [notchImage, roi] = SelectNotch(Image,'previousRegions',rectanglePositions,...
-                'axis',ax);
+                'axis',ax,'title',"Select notch to analyze");
             rectanglePositions = [rectanglePositions; roi];
             theta = AnalyzeNotch(notchImage,'axis',ax,'Style',style);
             output(i) = theta;
