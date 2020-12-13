@@ -19,7 +19,7 @@ addOptional(p, 'isRelative', isRelative, @islogical);
 addParameter(p,'SaveLocation',saveLocation,@isstring);
 addParameter(p,'SingleFile',singleFile, @islogical);
 addParameter(p,'WriteMode',writeMode,...
-             @(x) any(validatestring(x,writeOptions)));
+    @(x) any(validatestring(x,writeOptions)));
 addParameter(p,'StartFile', startFile,@isstring);
 parse(p,path,varargin{:});
 
@@ -36,25 +36,26 @@ if isRelative
 end
 if ~singleFile
     % Analyzing multiple files in the directory
-    filesAndFolders = dir(path);
-    filesInDir = filesAndFolders(~([filesAndFolders.isdir]));
-    numOfFiles = length(filesInDir);
+    filesAndFolders = dir(path)
+    filesInDir = filesAndFolders(~([filesAndFolders.isdir]))
+    numOfFiles = length(filesInDir)
     startIndex = 1;
     for f = 1:numOfFiles
         % Goes through the files to determine where to start analyzing
         % images from.
-        if strcmp(startFile,filesInDir(f).name)
+        if strcmp(startFile,filesInDir(f).name);
             startIndex = f;
             break;
         end
     end
-    theta_mat = zeros(numOfFiles-startIndex + 1, 1);
+    force_vec = zeros(numOfFiles-startIndex + 1, 1);
     for i = startIndex:numOfFiles
         % For loop through the files in the directory and analyze each file
         file = readmatrix(path+filesInDir(i).name);
-        try 
-        % This is in case someone decides the are done analyzing images but
-        % doesn't want to lose their progress.
+        disp(path+filesInDir(i).name);
+        try
+            % This is in case someone decides the are done analyzing images but
+            % doesn't want to lose their progress.
             force = mean(file(1:end,12));
             force_vec(i,:) = force;
         catch
