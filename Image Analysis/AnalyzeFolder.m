@@ -94,7 +94,7 @@
                 % doesn't want to lose their progress.
                 if strcmp(imgType, 'notches')
                     theta = AnalyzeImage(img,tubeParameter, 'ImgType', 'notches', 'axis',ax,'Style',style);
-                    theta_mat(i,:) = theta;
+                    theta_mat(i-startIndex + 1,:) = theta;
                     save_mat = theta_mat;
                 else
                     disp('analyzing curvature');
