@@ -36,14 +36,14 @@ if isRelative
 end
 if ~singleFile
     % Analyzing multiple files in the directory
-    filesAndFolders = dir(path)
-    filesInDir = filesAndFolders(~([filesAndFolders.isdir]))
-    numOfFiles = length(filesInDir)
+    filesAndFolders = dir(path);
+    filesInDir = filesAndFolders(~([filesAndFolders.isdir]));
+    numOfFiles = length(filesInDir);
     startIndex = 1;
     for f = 1:numOfFiles
         % Goes through the files to determine where to start analyzing
         % images from.
-        if strcmp(startFile,filesInDir(f).name);
+        if strcmp(startFile,filesInDir(f).name)
             startIndex = f;
             break;
         end
@@ -52,7 +52,7 @@ if ~singleFile
     for i = startIndex:numOfFiles
         % For loop through the files in the directory and analyze each file
         file = readmatrix(path+filesInDir(i).name);
-        disp(path+filesInDir(i).name);
+%         disp(path+filesInDir(i).name);
         try
             % This is in case someone decides the are done analyzing images but
             % doesn't want to lose their progress.
