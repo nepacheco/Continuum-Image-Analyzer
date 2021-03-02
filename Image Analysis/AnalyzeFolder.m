@@ -39,8 +39,8 @@
 
     p = inputParser();
     addRequired(p,'path',@isstring);
-    addOptional(p,'TubeParameter',tubeParameter,@isnumeric);
     addOptional(p, 'isRelative', isRelative, @islogical);
+    addOptional(p,'TubeParameter',tubeParameter,@isnumeric);
     addOptional(p,'ImgType', imgType, @(x) any(validatestring(x,imgOptions)));
     addOptional(p,'axis',0);
     addOptional(p,'SaveLocation',saveLocation,@isstring);
