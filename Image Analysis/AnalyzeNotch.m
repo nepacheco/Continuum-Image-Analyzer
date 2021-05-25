@@ -33,15 +33,15 @@ for i = 1:2
         switch style
             case 'line'
                 title(sprintf("Draw line %d",i));
-                line = drawline('Color','magenta','Parent',ax);
+                line = drawline('Color','magenta','Parent',ax,'LineWidth',0.5);
                 pos = line.Position;
             case 'points'
                 title(sprintf("Select Points for line %d",i));
-                point1 = drawpoint('Color','magenta','Parent',ax);
-                point2 = drawpoint('Color','red','Parent',ax);
+                point1 = drawpoint('Color','magenta','Parent',ax,'MarkerSize',3);
+                point2 = drawpoint('Color','red','Parent',ax,'MarkerSize',3);
                 pos = [point1.Position(1) point1.Position(2); 
                     point2.Position(1) point2.Position(2)];
-                line = drawline('Position',pos,'Color','magenta');
+                line = drawline('Position',pos,'Color','magenta','LineWidth',1.5);
                 delete(point1); delete(point2);
         end
         line_vec(:,i) = [(pos(1,1) - pos(2,1));(pos(1,2) - pos(2,2))];
