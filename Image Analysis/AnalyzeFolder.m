@@ -3,7 +3,7 @@
     %and goes through each image one by one.
     %
     %   To run:
-    %       theta_mat = AnalyzeFolder("C:\users\nickp\pictures\",5,false)
+    %       theta_mat = AnalyzeFolder("C:\users\nickp\pictures\",false,5)
 
     %   'TubeParameter' - Optional Argument determines how many notches should
     %   be expected on each tube or the outer diameter of a constant curvature
