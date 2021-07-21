@@ -44,7 +44,7 @@ for i = 1:2
                 line = drawline('Position',pos,'Color','magenta','LineWidth',1.5);
                 delete(point1); delete(point2);
         end
-        line_vec(:,i) = [(pos(1,1) - pos(2,1));(pos(1,2) - pos(2,2))];
+        line_vec(:,i) = [(pos(2,1) - pos(1,1));(pos(1,2) - pos(2,2))];
         line_vec(:,i) = line_vec(:,i)./norm(line_vec(:,i));
         choice = listdlg('PromptString',{'Are you happy with your line'},...
             'ListString',{'Yes','No'});
@@ -56,5 +56,11 @@ for i = 1:2
 end
 pause(0.1);
 
-theta = acosd(dot(line_vec(:,1),line_vec(:,2))/(norm(line_vec(:,1))*norm(line_vec(:,2))));
+% Measures angular displacement in the clockwise direction
+angle1 = atan2d(line_vec(2,1),line_vec(1,1));
+angle2 = atan2d(line_vec(2,2),line_vec(1,2));
+theta = mod(-(angle2 - angle1),360);
+
+% value between 0 and 180
+% theta = acos(dot(line_vec(:,1),line_vec(:,2))/(norm(line_vec(:,1))*norm(line_vec(:,2))););
 end
