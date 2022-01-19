@@ -41,7 +41,7 @@ switch imgType
         output = zeros(1,tubeParameter);
         rectanglePositions = [];
         for i = 1:tubeParameter
-            [notchImage, roi] = SelectNotch(Image,'previousRegions',rectanglePositions,...
+            [notchImage, roi] = SelectRegion(Image,'previousRegions',rectanglePositions,...
                 'axis',ax,'title',"Select notch to analyze");
             rectanglePositions = [rectanglePositions; roi];
             theta = AnalyzeNotch(notchImage,'axis',ax,'Style',style);
@@ -61,7 +61,7 @@ switch imgType
         scale = SetScale(scaleImage, 'axis', ax, 'Style', style, 'OD', tubeParameter)
         
         % 'select notch' to zoom in 
-        [arcImage, roi] = SelectNotch(Image, 'axis',ax, 'title', "Select area to zoom in on to find curvature");
+        [arcImage, roi] = SelectRegion(Image, 'axis',ax, 'title', "Select area to zoom in on to find curvature");
         
         % make polylines to create arc
         r_vecPX = AnalyzeArc(arcImage, 'axis', ax, 'Style', style);
