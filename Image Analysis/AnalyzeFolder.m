@@ -87,9 +87,9 @@
         r_mat = zeros(numOfFiles-startIndex + 1, 1);
         save_mat = [];
         for i = startIndex:numOfFiles
-            % For loop through the files in the directory and analyze each file
-            img = imread(path+filesInDir(i).name);
             try
+                % For loop through the files in the directory and analyze each file
+                img = imread(path+filesInDir(i).name);
                 % This is in case someone decides the are done analyzing images but
                 % doesn't want to lose their progress.
                 if strcmp(imgType, 'notches')
