@@ -65,8 +65,8 @@ switch imgType
         
         % make polylines to create arc
         r_vecPX = AnalyzeArc(arcImage, 'axis', ax, 'Style', style);
-        r_vec = r_vecPX * scale
-        output = r_vec(1) + OD/2;
+        r_vec = r_vecPX * scale;
+        output = r_vec(1) + tubeParameter/2;
 
 end
 
