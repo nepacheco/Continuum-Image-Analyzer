@@ -107,7 +107,7 @@ if ~singleFile
                 e.stack(1).name, e.stack(1).line, e.message);
             fprintf(2, '%s\n', errorMessage);
             fprintf(2,'The identifier was:\n%s\n',e.identifier);
-            break;
+%             break;
         end
     end
 else

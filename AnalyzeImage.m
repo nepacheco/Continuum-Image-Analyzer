@@ -22,7 +22,7 @@ p = inputParser();
 addRequired(p,'Image');
 addOptional(p,'TubeParameter',tubeParameter,@isnumeric);
 addOptional(p,'axis',0);
-addParameter(p,'Style',@(x) any(validatestring(x,styleOptions)));
+addParameter(p,'Style',style, @(x) any(validatestring(x,styleOptions)));
 addOptional(p,'ImgType', imgType, @(x) any(validatestring(x,imgOptions)));
 parse(p,path,varargin{:});
 
@@ -55,7 +55,7 @@ switch imgType
         Image = RotateImage(Image, 'axis',ax);
         
         % 'select notch' to zoom in 
-        [scaleImage, roi] = SelecRegion(Image, 'axis',ax, 'title',  "Select area to zoom in to set scale");
+        [scaleImage, roi] = SelectRegion(Image, 'axis',ax, 'title',  "Select area to zoom in to set scale");
         
         % make line to set scale
         scale = SetScale(scaleImage, 'axis', ax, 'Style', style, 'OD', tubeParameter)
