@@ -18,7 +18,7 @@ addRequired(p,'origImage',@isnumeric);
 checkmat = @(x) isnumeric(x) && (size(x,2) == 4 || size(x,2) == 0);
 addOptional(p, 'previousRegions', previousRegions, checkmat);
 addOptional(p,'axis',0);
-addOptional(p,'title',@isstring);
+addOptional(p,'title',txt,@isstring);
 parse(p,origImage,varargin{:});
 
 previousRegions = p.Results.previousRegions;
