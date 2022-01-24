@@ -43,8 +43,8 @@ while(1)
     rectPosition = roi.Position;
     xmin = round(roi.Position(1));
     ymin = round(roi.Position(2));
-    xmax = round(roi.Position(1) + roi.Position(3));
-    ymax = round(roi.Position(2) + roi.Position(4));
+    xmax = round(roi.Position(1) + roi.Position(3) - 1); % -1 needed to prevent going out of the figure 
+    ymax = round(roi.Position(2) + roi.Position(4) - 1); % -1 needed to prevent going out of the figure
     newImage = origImage(ymin:ymax, xmin:xmax, :);
     
     choice = listdlg('PromptString',{'Confirm zoom'},...
