@@ -25,7 +25,7 @@ end
 style = p.Results.Style;
 %*********************************************
 
-radius_vec = [0 0];
+radius_vec = 0;
 line_vec = zeros(2,2);
 I = imshow(zoomedImg,'Parent',ax);
 
@@ -62,7 +62,7 @@ for i = 1:1
         choice = listdlg('PromptString',{'Are you happy with your circle fit'},...
             'ListString',{'Yes','No'});
         
-        radius_vec(i) = radius;
+        radius_vec = radius;
         delete(line)
         
         if choice==1
