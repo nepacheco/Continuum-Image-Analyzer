@@ -1,4 +1,4 @@
-function theta_mat = AnalyzeFolder(path,varargin)
+function save_mat = AnalyzeFolder(path,varargin)
 %ANALYZEFOLDER Takes in a path to a folder which contains images to analyze
 %and goes through each image one by one.
 %
@@ -83,25 +83,15 @@ if ~singleFile
             break;
         end
     end
-    theta_mat = zeros(numOfFiles-startIndex + 1, tubeParameter);
-    r_mat = zeros(numOfFiles-startIndex + 1, 1);
-    save_mat = [];
+    results_array = cell(numOfFiles-startIndex + 1, 1);
     for i = startIndex:numOfFiles
+         % For loop through the files in the directory and analyze each file
         try
-            % For loop through the files in the directory and analyze each file
-            img = imread(path+filesInDir(i).name);
             % This is in case someone decides the are done analyzing images but
             % doesn't want to lose their progress.
-            if strcmp(imgType, 'notches')
-                theta = AnalyzeImage(img,tubeParameter, 'ImgType', 'notches', 'axis',ax,'Style',style);
-                theta_mat(i-startIndex + 1,:) = theta;
-                save_mat = theta_mat;
-            else
-                disp('analyzing curvature');
-                rad = AnalyzeImage(img,tubeParameter,'ImgType','curvature','axis',ax,'Style',style);
-                r_mat(i) = rad;
-                save_mat = r_mat;
-            end
+            img = imread(path+filesInDir(i).name);
+            img_results = AnalyzeImage(img,tubeParameter, 'ImgType', imgType, 'axis',ax,'Style',style);
+            results_array{i-startIndex + 1} = img_results;
         catch e
             errorMessage = sprintf('Error in function %s() at line %d.\n\nError Message:\n%s', ...
                 e.stack(1).name, e.stack(1).line, e.message);
@@ -113,17 +103,11 @@ if ~singleFile
 else
     % We are only analyzing a single file
     img = imread(path);
-    if strcmp(imgType, 'notches')
-        theta = AnalyzeImage(img,tubeParameter, 'ImgType', 'notches', 'axis',ax,'Style',style);
-        theta_mat = theta;
-        save_mat = theta_mat;
-    else
-        rad = AnalyzeImage(img,tubeParameter,'ImgType', 'curvature','axis',ax,'Style',style);
-        r_mat = rad;
-        save_mat = r_mat;
-    end
+    img_results = AnalyzeImage(img,tubeParameter, 'ImgType', imgType, 'axis',ax,'Style',style);
+    results_array = {img_results};
 end
 
+save_mat = cell2mat(results_array); % Conver the cell array to a matrix for saving
 if (strcmp(writeMode,"append"))
     % Append to the current csv file
     mat = readmatrix(saveLocation);
