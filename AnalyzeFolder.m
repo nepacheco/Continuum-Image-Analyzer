@@ -4,14 +4,18 @@ function save_mat = AnalyzeFolder(path,varargin)
 %
 %   To run:
 %       theta_mat = AnalyzeFolder("C:\users\nickp\pictures\",false,5)
-
+%       AnalyzeFolder("Images/",true,2.8,'curvature')
+%
+%   'isRelative' - Optional Argument sets whether the passed in path is
+%   relative. Default value is true.   
 %   'TubeParameter' - Optional Argument determines how many notches should
 %   be expected on each tube or the outer diameter of a constant curvature
-%   tube. Default is 5 notches or 5 mm.
-%   'isRelative' - Optional Argument sets whether the passed in path is
-%   relative. Default value is true.
+%   tube. Default is 5 notches or 5 mm.  
+%   'ImgType' - Name-Argument {'notches', 'curvature'} to select if analyzing curve or notches
 %   'SaveLocation' - Optional Argument which determines where to save the
 %   output. Abides by the 'isRelative' flag.
+%   'SingleFile' - Optional Argument to determine if we want to analyze a
+%   single file. Should be boolean.
 %   'Axis' - Optional Argument which is the axis to display the image one
 %   'WriteMode' - Name-Argument {'overwrite','append'} that determines how
 %   to write to the output file
@@ -19,7 +23,6 @@ function save_mat = AnalyzeFolder(path,varargin)
 %   analyze a notch using lines or points.
 %   'StartFile' - Name-Argument par which denotes what file in the
 %   directory we want to start analysis on
-%   'ImgType' - Name-Argument {'notches', 'curvature'} to select if analyzing curve or notches
 %   'OD' - Optional Argument for outer diameter of tube for scale
 
 
@@ -39,12 +42,12 @@ startFile = "";
 
 p = inputParser();
 addRequired(p,'path',@isstring);
-addOptional(p, 'isRelative', isRelative, @islogical);
+addOptional(p,'isRelative',isRelative, @islogical);
 addOptional(p,'TubeParameter',tubeParameter,@isnumeric);
 addOptional(p,'ImgType', imgType, @(x) any(validatestring(x,imgOptions)));
-addOptional(p,'axis',0);
 addOptional(p,'SaveLocation',saveLocation,@isstring);
 addOptional(p,'SingleFile',singleFile, @islogical);
+addOptional(p,'axis',0);
 addParameter(p,'WriteMode',writeMode,...
     @(x) any(validatestring(x,writeOptions)));
 addParameter(p,'Style',style,@(x) any(validatestring(x,styleOptions)));
