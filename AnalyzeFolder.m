@@ -66,7 +66,10 @@ singleFile = p.Results.SingleFile;
 writeMode = p.Results.WriteMode;
 style = p.Results.Style;
 startFile = p.Results.StartFile;
+allowedFileTypes = {'.png','.jpg','.jpeg'};
 %*********************************************
+startAnalyzing = strcmp(startFile,""); % start analyzing if the input name
+% is empty, otherwise don't start analyzing
 
 if isRelative
     path = pwd + "\" + path;
@@ -77,30 +80,32 @@ if ~singleFile
     filesAndFolders = dir(path);
     filesInDir = filesAndFolders(~([filesAndFolders.isdir]));
     numOfFiles = length(filesInDir);
-    startIndex = 1;
-    for f = 1:numOfFiles
-        % Goes through the files to determine where to start analyzing
-        % images from.
-        if strcmp(startFile,filesInDir(f).name)
-            startIndex = f;
-            break;
-        end
-    end
-    results_array = cell(numOfFiles-startIndex + 1, 1);
+    results_array = cell(numOfFiles, 1);
     for i = startIndex:numOfFiles
          % For loop through the files in the directory and analyze each file
-        try
-            % This is in case someone decides the are done analyzing images but
-            % doesn't want to lose their progress.
-            img = imread(path+filesInDir(i).name);
-            img_results = AnalyzeImage(img,tubeParameter, 'ImgType', imgType, 'axis',ax,'Style',style);
-            results_array{i-startIndex + 1} = img_results;
-        catch e
-            errorMessage = sprintf('Error in function %s() at line %d.\n\nError Message:\n%s', ...
-                e.stack(1).name, e.stack(1).line, e.message);
-            fprintf(2, '%s\n', errorMessage);
-            fprintf(2,'The identifier was:\n%s\n',e.identifier);
-%             break;
+        if strcmp(startFile,filesInDir(i).name)
+            % Check if we found the start file
+            startAnalyzing = true;
+        end
+        [~,~,ext] = fileparts(filesInDir(i).name); 
+        if ~ismember(lower(ext),allowedFileTypes)
+            % If file is not an image file, skip it
+            continue
+        end
+        if startAnalyzing % only analyze files once we found the starting file
+            try
+                % This is in case someone decides the are done analyzing images but
+                % doesn't want to lose their progress.
+                img = imread(path+filesInDir(i).name);
+                img_results = AnalyzeImage(img,tubeParameter, 'ImgType', imgType, 'axis',ax,'Style',style);
+                results_array{i} = img_results;
+            catch e
+                errorMessage = sprintf('Error in function %s() at line %d.\n\nError Message:\n%s', ...
+                    e.stack(1).name, e.stack(1).line, e.message);
+                fprintf(2, '%s\n', errorMessage);
+                fprintf(2,'The identifier was:\n%s\n',e.identifier);
+    %             break;
+            end
         end
     end
 else
