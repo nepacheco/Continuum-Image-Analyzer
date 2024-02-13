@@ -81,7 +81,7 @@ if ~singleFile
     filesInDir = filesAndFolders(~([filesAndFolders.isdir]));
     numOfFiles = length(filesInDir);
     results_array = cell(numOfFiles, 1);
-    for i = startIndex:numOfFiles
+    for i = 1:numOfFiles
          % For loop through the files in the directory and analyze each file
         if strcmp(startFile,filesInDir(i).name)
             % Check if we found the start file
