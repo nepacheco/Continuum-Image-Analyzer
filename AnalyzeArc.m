@@ -31,7 +31,7 @@ I = imshow(zoomedImg,'Parent',ax);
 
 for i = 1:1
     while(1)
-        title(ax, "Select 3 points on the edge of the tube");
+        title(ax, "Select 3 points on the inside of the curved edge");
         switch style
             case 'line'
                 line = drawpolyline('Color','magenta','Parent',ax);
